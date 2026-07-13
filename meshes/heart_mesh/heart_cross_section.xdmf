@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="heart" GridType="Uniform">
+      <Topology TopologyType="Triangle" NumberOfElements="65906" NodesPerElement="3">
+        <DataItem Dimensions="65906 3" NumberType="Int" Format="HDF">heart_cross_section.h5:/Mesh/heart/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XY">
+        <DataItem Dimensions="33562 2" Format="HDF">heart_cross_section.h5:/Mesh/heart/geometry</DataItem>
+      </Geometry>
+    </Grid>
+    <Grid Name="cell_tags" GridType="Uniform">
+      <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@Name='heart']/Geometry)" />
+      <Topology TopologyType="Triangle" NumberOfElements="65906" NodesPerElement="3">
+        <DataItem Dimensions="65906 3" NumberType="Int" Format="HDF">heart_cross_section.h5:/MeshTags/cell_tags/topology</DataItem>
+      </Topology>
+      <Attribute Name="cell_tags" AttributeType="Scalar" Center="Cell">
+        <DataItem Dimensions="65906 1" Format="HDF">heart_cross_section.h5:/MeshTags/cell_tags/Values</DataItem>
+      </Attribute>
+    </Grid>
+    <Grid Name="facet_tags" GridType="Uniform">
+      <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@Name='heart']/Geometry)" />
+      <Topology TopologyType="PolyLine" NumberOfElements="1220" NodesPerElement="2">
+        <DataItem Dimensions="1220 2" NumberType="Int" Format="HDF">heart_cross_section.h5:/MeshTags/facet_tags/topology</DataItem>
+      </Topology>
+      <Attribute Name="facet_tags" AttributeType="Scalar" Center="Cell">
+        <DataItem Dimensions="1220 1" Format="HDF">heart_cross_section.h5:/MeshTags/facet_tags/Values</DataItem>
+      </Attribute>
+    </Grid>
+  </Domain>
+</Xdmf>

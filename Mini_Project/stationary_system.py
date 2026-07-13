@@ -182,7 +182,7 @@ uh.name = "u"
 vh.name = "v"
 
 # Salvando para visualizar no Paraview
-results_folder = Path("Mini-Project/results_stationary_system")
+results_folder = Path("Mini_Project/results_stationary_system")
 results_folder.mkdir(exist_ok=True, parents=True)
 # with dolfinx.io.XDMFFile(MPI.COMM_WORLD, results_folder / "ssystem.xdmf", "w") as xdmf:
 #     xdmf.write_mesh(domain)
