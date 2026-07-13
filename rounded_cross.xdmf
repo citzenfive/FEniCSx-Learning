@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="rounded_cross" GridType="Uniform">
+      <Topology TopologyType="Triangle" NumberOfElements="14746" NodesPerElement="3">
+        <DataItem Dimensions="14746 3" NumberType="Int" Format="HDF">rounded_cross.h5:/Mesh/rounded_cross/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XY">
+        <DataItem Dimensions="7556 2" Format="HDF">rounded_cross.h5:/Mesh/rounded_cross/geometry</DataItem>
+      </Geometry>
+    </Grid>
+    <Grid Name="cell_tags" GridType="Uniform">
+      <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@Name='rounded_cross']/Geometry)" />
+      <Topology TopologyType="Triangle" NumberOfElements="14746" NodesPerElement="3">
+        <DataItem Dimensions="14746 3" NumberType="Int" Format="HDF">rounded_cross.h5:/MeshTags/cell_tags/topology</DataItem>
+      </Topology>
+      <Attribute Name="cell_tags" AttributeType="Scalar" Center="Cell">
+        <DataItem Dimensions="14746 1" Format="HDF">rounded_cross.h5:/MeshTags/cell_tags/Values</DataItem>
+      </Attribute>
+    </Grid>
+    <Grid Name="facet_tags" GridType="Uniform">
+      <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@Name='rounded_cross']/Geometry)" />
+      <Topology TopologyType="PolyLine" NumberOfElements="524" NodesPerElement="2">
+        <DataItem Dimensions="524 2" NumberType="Int" Format="HDF">rounded_cross.h5:/MeshTags/facet_tags/topology</DataItem>
+      </Topology>
+      <Attribute Name="facet_tags" AttributeType="Scalar" Center="Cell">
+        <DataItem Dimensions="524 1" Format="HDF">rounded_cross.h5:/MeshTags/facet_tags/Values</DataItem>
+      </Attribute>
+    </Grid>
+  </Domain>
+</Xdmf>

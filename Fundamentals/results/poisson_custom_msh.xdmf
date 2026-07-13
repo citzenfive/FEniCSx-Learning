@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="rounded_cross" GridType="Uniform">
+      <Topology TopologyType="Triangle" NumberOfElements="14746" NodesPerElement="3">
+        <DataItem Dimensions="14746 3" NumberType="Int" Format="HDF">poisson_custom_msh.h5:/Mesh/rounded_cross/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XY">
+        <DataItem Dimensions="7556 2" Format="HDF">poisson_custom_msh.h5:/Mesh/rounded_cross/geometry</DataItem>
+      </Geometry>
+    </Grid>
+    <Grid Name="Poisson" GridType="Collection" CollectionType="Temporal">
+      <Grid Name="Poisson" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0" />
+        <Attribute Name="Poisson" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="7556 1" Format="HDF">poisson_custom_msh.h5:/Function/Poisson/0</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>
