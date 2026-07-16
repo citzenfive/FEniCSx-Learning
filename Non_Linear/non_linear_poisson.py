@@ -12,24 +12,30 @@ domain = mesh.create_unit_square(MPI.COMM_WORLD, 12, 12, mesh.CellType.quadrilat
 V = fem.functionspace(domain, ("Lagrange", 1))
 
 X = ufl.SpatialCoordinate(domain)
-u_ufl = 1 + X[0] + 2* X[1]
+u_ufl = 1 + X[0] + 2 * X[1]  # type: ignore[attr-defined]
 
 f = -ufl.div(q(u_ufl) * ufl.grad(u_ufl))
 
-def u_exac(x): 
+
+def u_exac(x):
     return eval(str(u_ufl))
+
 
 # Aplicando as condições de contorno
 uD = fem.Function(V)
-uD.interpolate(u_exac)
+uD.interpolate(u_exac)  # type: ignore[attr-defined]
 fdim = domain.topology.dim - 1
-boundary_facets = mesh.locate_entities_boundary(domain, fdim, lambda X: np.full(X.shape[1], True, dtype=bool))
-bc = fem.dirichletbc(uD, fem.locate_dofs_topological(V, fdim, boundary_facets))
+boundary_facets = mesh.locate_entities_boundary(
+    domain, fdim, lambda X: np.full(X.shape[1], True, dtype=bool)
+)
+bc = fem.dirichletbc(uD, fem.locate_dofs_topological(V, fdim, boundary_facets))  # type: ignore[attr-defined]
 
 # Como agora temos um problema não-linear, ao invés de trial function iremos definir uma função em V, que irá servir como nossa variável não-conhecida do problema
 uh = fem.Function(V)
 v = ufl.TestFunction(V)
-F = q(uh) * ufl.dot(ufl.grad(uh), ufl.grad(v))*ufl.dx - f*v*ufl.dx # Definimos aqui o nosso residual
+F = (
+    q(uh) * ufl.dot(ufl.grad(uh), ufl.grad(v)) * ufl.dx - f * v * ufl.dx
+)  # Definimos aqui o nosso residual
 
 # Precisamos usar uma definição de problema não linear
 # Como é o usual, usei o método de Newton
@@ -54,7 +60,7 @@ petsc_options = {
 # Agora definimos o problem
 problem = NonlinearProblem(
     F,
-    uh,
+    uh,  # type: ignore[attr-defined]
     bcs=[bc],
     petsc_options=petsc_options,
     petsc_options_prefix="nonlinear_poisson",
@@ -64,5 +70,7 @@ problem = NonlinearProblem(
 problem.solve()
 converged = problem.solver.getConvergedReason()
 num_iter = problem.solver.getIterationNumber()
-assert converged > 0, f"Solver did not converge for reasons:\n{converged}"
-print(f"Solver converged after {num_iter} iteractions with converged reason {converged}")
+assert converged > 0, f"Solver did not converge for reasons:\n{converged}"  # type: ignore[attr-defined]
+print(
+    f"Solver converged after {num_iter} iteractions with converged reason {converged}"
+)
