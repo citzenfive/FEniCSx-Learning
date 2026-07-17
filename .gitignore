@@ -236,3 +236,5 @@ pyrightconfig.json
 
 */*.xdmf
 */*.h5
+*/*/*.xdmf
+*/*/*.h5
