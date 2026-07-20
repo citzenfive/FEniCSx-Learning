@@ -4,7 +4,7 @@ from dolfinx.io import XDMFFile
 from mpi4py import MPI
 
 
-def read_mesh(
+def read2DMesh(
     path_to_mesh: str | Path = "rounded_cross.xdmf",
     name: str = "rounded_cross",
 ):

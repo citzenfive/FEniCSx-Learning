@@ -4,13 +4,13 @@ Plot one-dimensional time-dependent FEniCSx solutions stored in XDMF files.
 Example
 -------
 python Mini_Project/plot1D.py \
-    Mini_Project/results_pathogen_leukocyte/pathogen.xdmf \
-    Mini_Project/results_pathogen_leukocyte/leukocytes.xdmf \
+    Mini_Project/results_pathogen_leukocyte/1D/pathogen.xdmf \
+    Mini_Project/results_pathogen_leukocyte/1D/leukocytes.xdmf \
     --times 0 6 12 18 24 30 \
     --labels "Bacteria" "Neutrophils" \
     --xlim 0 1 \
     --formats png pdf svg \
-    --output-dir Mini_Project/results_pathogen_leukocyte/plots
+    --output-dir Mini_Project/results_pathogen_leukocyte/1D/plots
 """
 
 from __future__ import annotations

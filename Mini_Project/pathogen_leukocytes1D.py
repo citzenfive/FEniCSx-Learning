@@ -12,7 +12,7 @@ from dolfinx.fem.petsc import NonlinearProblem
 from mpi4py import MPI
 
 # Aqui, estou fazendo algumas configurações iniciais do problema
-results_folder = Path("Mini_Project/results_pathogen_leukocyte")
+results_folder = Path("Mini_Project/results_pathogen_leukocyte/1D")
 results_folder.mkdir(exist_ok=True, parents=True)
 
 # results_file = results_folder / "pathogen_leukocyte.xdmf"
