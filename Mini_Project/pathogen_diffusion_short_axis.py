@@ -26,7 +26,7 @@ Y_MAX = 4.02786574
 
 
 def initial_condition_pathogen(x):
-    amplitude = 1.0e-1
+    amplitude = 1.0e-3
 
     # Centro escolhido em coordenadas normalizadas
     center_x_normalized = 0.78
@@ -49,9 +49,9 @@ t0 = 0.0
 tf = 10.0
 t = 0.0
 
-Dp_real = 1.0
-gammap_real = 2.67
-lambdap_real = 1.50
+Dp_real = 0.05
+gammap_real = 0.67
+lambdap_real = 0.60
 
 
 dt_real = 1e-3
