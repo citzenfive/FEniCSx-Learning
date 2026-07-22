@@ -1,4 +1,5 @@
 import math as mt
+import time
 from pathlib import Path
 
 import dolfinx.io
@@ -75,7 +76,7 @@ W = 0.2
 domain = mesh.create_box(
     MPI.COMM_WORLD,
     [np.array([0, 0, 0]), np.array([L, W, W])],
-    [100, 100, 100],
+    [100, 50, 50],
     cell_type=mesh.CellType.hexahedron,
 )
 
@@ -102,7 +103,7 @@ f = fem.Constant(domain, default_scalar_type((0, 0, f_z)))  # type: ignore[attr-
 
 # Definindo nossa forma bilinear
 a = ufl.inner(sigma(u, lambda_, mu_), epsilon(v)) * ufl.dx
-L = ufl.dot(f, v) * ufl.dx + ufl.dot(T, v) * ds
+L = ufl.dot(f, v) * ufl.dx + ufl.dot(T, v) * ds  # type: ignore[attr-defined]
 
 petsc_options = {
     "ksp_type": "gmres",
@@ -121,27 +122,29 @@ problem = LinearProblem(
     petsc_options=petsc_options,
     petsc_options_prefix="linear_elasticity",
 )
+
+start = time.time()
 uh = problem.solve()
 
 with dolfinx.io.XDMFFile(
     MPI.COMM_WORLD, results_folder / "LNElasticity.xdmf", "w"
 ) as xdmf:
     xdmf.write_mesh(domain)
-    uh.name = "Deformation"
-    xdmf.write_function(uh)
+    uh.name = "Deformation"  # type: ignore[attr-defined]
+    xdmf.write_function(uh)  # type: ignore[attr-defined]
 
 # Calculando as tensões
 s = sigma(uh, lambda_, mu_) - 1.0 / 3 * ufl.tr(sigma(uh, lambda_, mu_)) * ufl.Identity(
     len(uh)
 )
-von_Mises = ufl.sqrt(3.0 / 2 * ufl.inner(s, s))
+von_Mises = ufl.sqrt(3.0 / 2 * ufl.inner(s, s))  # type: ignore[attr-defined]
 
 V_von_mises = fem.functionspace(domain, ("DG", 0))
 stress_expr = fem.Expression(von_Mises, V_von_mises.element.interpolation_points)
 stresses = fem.Function(V_von_mises)
-stresses.interpolate(stress_expr)
+stresses.interpolate(stress_expr)  # type: ignore[attr-defined]
 
-stresses.name = "Von Mises"
+stresses.name = "Von Mises"  # type: ignore[attr-defined]
 
 with dolfinx.io.XDMFFile(
     MPI.COMM_WORLD,
@@ -149,4 +152,7 @@ with dolfinx.io.XDMFFile(
     "w",
 ) as xdmf:
     xdmf.write_mesh(domain)
-    xdmf.write_function(stresses)
+    xdmf.write_function(stresses)  # type: ignore[attr-defined]
+end = time.time()
+
+print(f"Time to solve = {end - start} seconds")
