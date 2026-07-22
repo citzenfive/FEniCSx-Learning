@@ -75,7 +75,7 @@ W = 0.2
 domain = mesh.create_box(
     MPI.COMM_WORLD,
     [np.array([0, 0, 0]), np.array([L, W, W])],
-    [100, 20, 20],
+    [100, 100, 100],
     cell_type=mesh.CellType.hexahedron,
 )
 
@@ -104,12 +104,21 @@ f = fem.Constant(domain, default_scalar_type((0, 0, f_z)))  # type: ignore[attr-
 a = ufl.inner(sigma(u, lambda_, mu_), epsilon(v)) * ufl.dx
 L = ufl.dot(f, v) * ufl.dx + ufl.dot(T, v) * ds
 
+petsc_options = {
+    "ksp_type": "gmres",
+    "ksp_gmres_restart": 30,
+    "ksp_rtol": 1e-8,
+    "ksp_max_it": 1000,
+    "ksp_monitor": None,
+}
+
 # Resolvendo o problema
 problem = LinearProblem(
     a,
     L,
     bcs=[bc],
-    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    # petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options=petsc_options,
     petsc_options_prefix="linear_elasticity",
 )
 uh = problem.solve()
